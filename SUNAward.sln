@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SUNAward", "SUNAward\SUNAward.csproj", "{AEF4A8DA-352D-46B5-9343-F79862B14C98}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Dev|Any CPU = Dev|Any CPU
+		Prod|Any CPU = Prod|Any CPU
+		QA|Any CPU = QA|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.QA|Any CPU.Build.0 = QA|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF4A8DA-352D-46B5-9343-F79862B14C98}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D768D8BF-9D1A-499C-BC43-C5331AAD42CB}
+	EndGlobalSection
+EndGlobal

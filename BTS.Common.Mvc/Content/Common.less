@@ -1,0 +1,590 @@
+﻿// ASU colors
+// TODO: remove unused ones
+@maroon: #8c1d40;
+@lightmaroon: #d23153;
+@gold: #ffb130;
+@white: #ffffff;
+@black: #000000;
+@green: #568e14;
+@blue: #008ed6;
+@orange: #f47c00;
+@grey: #afa593;
+
+@navbar-bg: #353535;
+@navbar-text: #ededed;
+@navbar-bg-hover: @black;
+@navbar-text-hover: @gold;
+@navbar-home-text: @white;
+@navbar-home-hover: #ffb204;
+
+@superfooter-bg: #1e1e1e;
+@superfooter-text: @white;
+@superfooter-link: #a9a9a9;
+@superfooter-link-hover: @white;
+
+/* ASU font stack */
+body {
+    font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+a {
+    color: @maroon;
+    border-bottom: 1px dotted @maroon;
+
+    &:hover, &:focus {
+        color: @lightmaroon;
+        border-bottom-color: @lightmaroon;
+        text-decoration: none;
+    }
+}
+
+header {
+    a {
+        border-bottom: none;
+    }
+}
+
+footer {
+    /* Extend gray footer bar */
+    background-color: #e5e5e5;
+
+    /* super footer styles (a row above normal asu shared footer) */
+    .superfooter {
+        background-color: @superfooter-bg;
+        color: @superfooter-text;
+        font-size: 16px;
+        padding-top: 1.25em;
+
+        h2 {
+            font-size: 21px;
+        }
+
+        ul {
+            padding-left: 0;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        a {
+            color: @superfooter-link;
+            border-bottom: 1px dotted @superfooter-link;
+
+            &:hover {
+                color: @superfooter-link-hover;
+                border-bottom-color: @superfooter-link-hover;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+h1 {
+    font-size: 24px;
+    padding: 0 0 12px 12px;
+    margin: 0;
+
+    a {
+        color: @black;
+        text-decoration: none;
+
+        &:hover, &:active, &:visited {
+            color: @black;
+            text-decoration: none;
+        }
+    }
+}
+
+/* override UA stylesheets for certain elements since they clash with bootstrap styles */
+abbr {
+    text-decoration: none;
+}
+
+/* override bootstrap navbar styles */
+.navbar {
+    z-index: 400;
+    height: 57px;
+    border-radius: 0;
+    border: none;
+    font-size: 16px;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    a, a:hover {
+        border-bottom: none;
+    }
+
+    .nav-item {
+        height: 57px;
+    }
+}
+
+.navbar-container {
+    background-color: @navbar-bg;
+}
+
+.navbar-inverse {
+    background-color: @navbar-bg;
+    background-image: none;
+
+    .navbar-brand, .navbar-nav > li {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+
+        &:hover, &.active:hover, &.show {
+            background-color: @navbar-bg-hover;
+
+            & > a {
+                color: @navbar-text-hover;
+                text-decoration: none;
+            }
+        }
+
+        & > a {
+            color: @navbar-text;
+            line-height: 57px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        &.active {
+            background-color: #1f1f1f;
+
+            & > a {
+                color: @navbar-text-hover;
+
+                &:hover {
+                    color: @navbar-text-hover;
+                }
+            }
+        }
+
+        &.home > a {
+            color: @navbar-home-text;
+        }
+
+        &.home:hover > a {
+            color: @navbar-home-hover;
+        }
+
+        &.home.active > a {
+            color: @navbar-home-hover;
+        }
+    }
+
+    .navbar-nav > .open {
+        & > a, & > a:hover, & > a:focus {
+            color: @navbar-text-hover;
+        }
+    }
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
+    // re-inherit the nav-link padding that close gets rid of
+    button.close.nav-link {
+        padding: 0.5rem 1rem;
+        border: none;
+
+        &:hover {
+            border: none;
+        }
+    }
+
+    // maroon top to tabs, makes them look nicer
+    .nav-link {
+        border-width: 5px 1px 1px 1px;
+        border-color: transparent;
+        color: @grey;
+
+        &.active {
+            border-top-color: @maroon;
+            color: @maroon;
+        }
+
+        &:hover {
+            border-top-color: @maroon;
+        }
+    }
+}
+
+/* bootstrap-theme doesn't customize alert boxes properly */
+.alert-info {
+    background-image: none;
+    background-color: @blue;
+    border-color: darken(@blue, 15%);
+    color: @white;
+}
+
+.alert-success {
+    background-image: none;
+    background-color: #148e4b;
+    border-color: darken(#148e4b, 15%);
+    color: @white;
+}
+
+.alert-danger {
+    background-image: none;
+    background-color: #ec5937;
+    border-color: darken(#ec5937, 15%);
+    color: @white;
+}
+
+.alert-warning {
+    background-image: none;
+    background-color: #bfe319;
+    border-color: darken(#bfe319, 15%);
+    color: @black;
+}
+
+#tabContent {
+    margin-bottom: 15px;
+}
+
+div.spinner {
+    margin: 40px auto -50px auto;
+    width: 21px;
+    height: 21px;
+    z-index: 50;
+
+    &:only-child {
+        margin-bottom: 50px;
+    }
+}
+
+.tab-close {
+    color: @grey;
+    margin-left: 5px;
+
+    &:hover {
+        color: red;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+}
+
+.errorDetails {
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.submit-group {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    & button {
+        float: right;
+        margin-left: 10px;
+    }
+}
+
+.form-horizontal .submit-group button {
+    float: none;
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.help {
+    cursor: help;
+}
+
+.form-control.readonly {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    -moz-transition: none;
+    -o-transition: none;
+    -webkit-transition: none;
+    transition: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.btn {
+    background-image: none;
+    filter: none;
+    border: 1px solid transparent;
+
+    &:hover, &:active, &:focus {
+        border: 1px solid transparent;
+    }
+}
+
+// not using dotted bottom margin because it would appear under the button instead of under the link
+// and making a dotted text-decoration underline looks super ugly. As such, leave as default underline.
+.btn-link {
+    color: @maroon;
+
+    &:hover, &:active, &:focus {
+        color: @lightmaroon;
+    }
+}
+
+.btn-primary, a.btn-primary {
+    background-color: @maroon;
+    color: @white;
+    background-image: none;
+    filter: none;
+    border: 1px solid transparent;
+
+    &:hover, &:active, &:focus {
+        background-color: @lightmaroon;
+        color: @white;
+        border: 1px solid transparent;
+    }
+}
+
+.btn-primary[disabled], a.btn-primary[disabled] {
+    background-color: @maroon;
+    color: @white;
+    background-image: none;
+    filter: none;
+    border: 1px solid transparent;
+
+    &:hover, &:active, &:focus {
+        background-color: @maroon;
+        color: @white;
+        border: 1px solid transparent;
+    }
+}
+
+.btn-secondary, a.btn-secondary,
+.btn-default, a.btn-default {
+    background-color: #dbdbdb;
+    color: #2a2a2a;
+    background-image: none;
+    filter: none;
+    border: 1px solid transparent;
+
+    &:hover, &:active, &:focus {
+        background-color: #f2f2f2;
+        color: #2a2a2a;
+        border: 1px solid transparent;
+    }
+}
+
+.btn-secondary[disabled], a.btn-secondary[disabled],
+.btn-default[disabled], a.btn-default[disabled] {
+    background-color: #dbdbdb;
+    color: #2a2a2a;
+    background-image: none;
+    filter: none;
+    border: 1px solid transparent;
+
+    &:hover, &:active, &:focus {
+        background-color: #dbdbdb;
+        color: #2a2a2a;
+        border: 1px solid transparent;
+    }
+}
+
+/* select/dropdown styles -- these use buttons but we don't want the default button styling because it looks ugly with multiselects */
+.btn-default.dropdown-toggle {
+    background-color: @white;
+    border-color: #cccccc;
+
+    &:hover, &:focus {
+        background-color: @white;
+        border-color: #cccccc;
+    }
+
+    .open > & {
+        background-color: @white;
+        border-color: #cccccc;
+
+        &:hover, &:focus {
+            background-color: @white;
+            border-color: #cccccc;
+        }
+    }
+}
+
+.dropdown-menu {
+    a {
+        border: none;
+        color: #2a2a2a;
+
+        &:hover {
+            color: #2a2a2a;
+        }
+    }
+
+    .dropdown-item {
+        svg {
+            visibility: hidden;
+        }
+
+        &.selected svg {
+            visibility: visible;
+        }
+
+        span.text {
+            margin-left: 5px;
+        }
+
+        &:hover, &:focus {
+            background-color: #dbdbdb;
+        }
+
+        &.active, &:active {
+            color: @white;
+            background-color: @maroon;
+
+            a {
+                color: @white;
+            }
+
+            &:hover, &:hover a {
+                color: @white;
+            }
+        }
+    }
+}
+
+/* form controls */
+.form-control:focus {
+    border-color: @maroon;
+    box-shadow: 0 0 0 0.2rem fade(@maroon, 25%);
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: @maroon;
+    background-color: @maroon;
+}
+
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+    background-color: @lightmaroon;
+    border-color: @lightmaroon;
+}
+
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+    border-color: @maroon;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem fade(@maroon, 25%);
+}
+
+/* grid styles */
+.grid-container {
+    margin-bottom: 20px;
+
+    .grid {
+        margin-bottom: 5px;
+
+        &[data-rowselect="Single"] tr, &[data-rowselect="Multiple"] tr {
+            cursor: pointer;
+        }
+    }
+
+    .grid-action-col {
+        width: 100px;
+    }
+
+    button.grid-action {
+        margin-left: 15px;
+        visibility: hidden;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .grid-row:hover button.grid-action {
+        visibility: visible;
+    }
+
+    button.grid-action-edit:hover {
+        color: goldenrod;
+    }
+
+    button.grid-action-save:hover {
+        color: green;
+    }
+
+    button.grid-action-delete:hover, button.grid-action-cancel:hover {
+        color: red;
+    }
+
+    button.grid-action-save, button.grid-action-cancel {
+        visibility: visible;
+        opacity: 0.4;
+    }
+
+    .grid-header, .grid-footer {
+        width: 100%;
+    }
+
+    .grid-info {
+        float: left;
+        display: inline-block;
+
+        .grid-export-container {
+            display: inline-block;
+
+            li {
+                margin-left: 5px;
+            }
+        }
+
+        button.grid-customize, button.grid-export {
+            float: none;
+            vertical-align: middle;
+            font-size: inherit;
+        }
+    }
+
+    .grid-nav {
+        float: right;
+        display: inline-block;
+
+        ul {
+            display: inline;
+            list-style-type: none;
+            margin-left: 10px;
+            padding-left: 0;
+
+            li {
+                display: inline;
+                margin-left: 5px;
+            }
+        }
+    }
+
+    .grid-sortable {
+        cursor: pointer;
+    }
+}
+
+/* search box */
+#asu_search_module {
+    .search-options {
+        label {
+            margin: 0 5px 0 5px;
+
+            input[type="radio"] {
+                vertical-align: bottom;
+            }
+        }
+    }
+}
+
+/* ASU mobile menu layering */
+#asu_hdr {
+    // when the header is opened on smallish screens, this gets reset to 100 as a higher specificity rule
+    // we do not want this, hence the !important
+    z-index: 500 !important;
+}
+
+// similarly, the blackout actually appears underneath some other UI elements due to not even HAVING a z-index
+#blackOut {
+    z-index: 499;
+}

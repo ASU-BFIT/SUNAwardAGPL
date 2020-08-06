@@ -1,0 +1,16 @@
+<input id="{{inputId}}"
+       placeholder="Search for people"
+       [value]="selectedValue"
+       type="text"
+       class="form-control"
+       (selectItem)="selectedItem($event)"
+       (blur)="blur($event)"
+       [(ngModel)]="model"
+       [ngbTypeahead]="search"
+       [resultTemplate]="typeaheadResult"
+       [inputFormatter]="formatter" />
+
+<ng-template #typeaheadResult let-result="result" let-term="term">
+    <ngb-highlight [result]="result.DisplayName" [term]="term"></ngb-highlight>
+    <div class="ml-2" [hidden]="!result.Title && !result.Department">{{getTitleDepartment(result)}}</div>
+</ng-template>

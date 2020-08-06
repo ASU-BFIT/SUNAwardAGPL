@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~ngx-bootstrap/datepicker/bs-datepicker.css";
+
+.awardPreview {
+    width: 100%;
+}
+
+.ngx-pagination .current {
+    background: #a30046 !important;
+    color: white !important;
+    border: 1px solid #a30046 !important;
+    padding: 6px 19px !important;
+}
+
+.ngx-pagination li {
+    margin: 0 !important;
+}
+
+.ngx-pagination a {
+    color: #a30046 !important;
+    background-color: white !important;
+    border: 1px solid #dddddd !important;
+    padding: 6px 19px !important;
+}
+
+/*Add/Edit Modal styling*/
+.modal-overlay {
+    background-color: rgba(0, 0, 0, .4);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 500;
+}
+
+.closed .modal {
+    top: -50%;
+}
+
+.closed .modal-overlay {
+    display: none;
+}
+
+.open .modal {
+    display: block;
+    overflow: scroll;
+}
+
+.open .modal-dialog {
+    max-width: 1000px;
+}
+
+.center-spinner {
+    margin-top:20%;
+    margin-left: 50%;
+}

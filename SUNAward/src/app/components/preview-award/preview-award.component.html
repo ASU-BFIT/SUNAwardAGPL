@@ -1,0 +1,26 @@
+
+<div class="spinner-border center-spinner" role="status" [hidden]="!submitLoading">
+    <span class="sr-only">Loading...</span>
+</div>
+
+<div [hidden]="submitLoading">
+    <app-alert-closeable [alerts]="alerts"></app-alert-closeable>
+    <div class="mt-4" *ngIf="!awardSubmitted">
+        <div class="row">
+            <div class="col">A preview of the award is below. Depending on your connection speed, it may take a few seconds to load.</div>
+        </div>
+        <img [src]="previewHref" class="awardPreview">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-md" (click)="submit()">Submit</button>
+                <button type="button" class="btn btn-secondary btn-md ml-2" (click)="back()">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4" *ngIf="awardSubmitted">
+        <div class="col">
+            <button type="button" class="btn btn-primary btn-md" routerLink="/">Submit Another Award</button>
+        </div>
+    </div>
+</div>

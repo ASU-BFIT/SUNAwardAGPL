@@ -1,0 +1,18 @@
+﻿@model IEnumerable<MvcHtmlString>
+
+<div id="tabBar" role="navigation">
+    <ul class="nav nav-tabs" role="tablist">
+        @foreach (var tab in Model)
+        {
+            <text>@tab</text>
+        }
+
+        <li class="nav-item tabbar-button ml-auto">
+            <button class="nav-link close tabbar-button-refresh" data-refresh="tab" aria-label="Refresh" title="Refresh">
+                <span class="fa fa-refresh" aria-hidden="true"></span>
+            </button>
+        </li>
+    </ul>
+</div>
+
+<div id="tabContent" class="tab-content"></div>

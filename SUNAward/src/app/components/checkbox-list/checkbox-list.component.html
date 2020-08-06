@@ -1,0 +1,8 @@
+<ng-container *ngFor="let item of options">
+    <div class="row mt-2">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="category-{{item.value}}" [(ngModel)]="item.checked" [disabled]="item.disabled" (change)="onToggle()" />
+            <label class="custom-control-label category-label" for="category-{{item.value}}">{{item.label}}</label>
+        </div>
+    </div>
+</ng-container>

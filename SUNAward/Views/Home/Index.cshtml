@@ -1,0 +1,12 @@
+﻿@model SUNAward.Models.UserInfoModel
+<div class="mb-3">
+    <app-root>Loading SUN Award...</app-root>
+</div>
+<script type="text/javascript">
+    window.presenterName = "@Model.PresenterName";
+    window.awardCats = [];
+    @foreach (var cat in Model.Categories)
+    {
+        @: window.awardCats.push({id: @cat.CategoryId, name: "@cat.CategoryName"});
+    }
+</script>

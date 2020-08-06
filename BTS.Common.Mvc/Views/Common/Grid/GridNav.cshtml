@@ -1,0 +1,35 @@
+﻿@model BTS.Common.Mvc.Grid.Models.GridModel
+
+<ul>
+    @if (Model.StartPageIndex > 0)
+    {
+        <li class="grid-nav-back"><a href="#" data-page="@(Model.StartPageIndex - 1)">&laquo;</a></li>
+    }
+
+    @for (int i = Model.StartPageIndex; i < Model.EndPageIndex && i < Model.NumPages; i++)
+    {
+        string className = "grid-nav-page";
+        bool active = (i == Model.CurrentPageIndex);
+
+        if (active)
+        {
+            className += " active";
+        }
+
+        <li class="@className">
+            @if (active)
+            {
+                @(i + 1)
+            }
+            else
+            {
+                <a href="#" data-page="@i">@(i + 1)</a>
+            }
+        </li>
+    }
+
+    @if (Model.EndPageIndex < Model.NumPages)
+    {
+        <li class="grid-nav-forward"><a href="#" data-page="@(Model.EndPageIndex)">&raquo;</a></li>
+    }
+</ul>

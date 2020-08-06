@@ -1,0 +1,214 @@
+﻿@model BTS.Common.Mvc.Grid.Models.GridModel
+
+<div class="grid-container grid-@Html.AttributeEncode(Model.GridName)" id="@Model.GridId" data-refresh-action="@(Model.GridRefreshAction ?? String.Empty)" data-export-action="@(Model.GridExportAction ?? String.Empty)" data-customize-action="@(Model.GridCustomizeAction ?? String.Empty)" data-edit-action="@(Model.InlineEditAction ?? String.Empty)" data-delete-action="@(Model.InlineDeleteAction ?? String.Empty)">
+    @* Add in our CSRF anti-forgery token for use with grid ajax *@
+    <div class="grid-tokens" aria-hidden="true">
+        @Html.Hidden("GridId", Model.GridId, new { disabled = "disabled" })
+        @Html.Hidden("PageIndex", Model.CurrentPageIndex, new { disabled = "disabled" })
+        @Html.Hidden("PageSize", Model.PageSize, new { disabled = "disabled" })
+        @for (int i = 0; i < Model.SortColumns.Count; i++)
+        {
+            @Html.Hidden("SortColumnInfo[" + i + "].ColumnName", Model.SortColumns[i].ColumnName, new { disabled = "disabled" })
+            @Html.Hidden("SortColumnInfo[" + i + "].SortOrder", Model.SortColumns[i].SortOrder, new { disabled = "disabled" })
+        }
+    </div>
+
+    @if (Model.Hidden)
+    {
+        // show nothing here; we just want the grid frame to ajax stuff in later
+    }
+    else if (Model.NumRecords == 0)
+    {
+        <div class="grid-no-results">@Model.NoResultsText</div>
+    }
+    else
+    {
+        <div class="grid-header">
+            <div class="grid-info">
+                @if (Model.GridExportTypes.Count > 0)
+                {
+                    <div class="dropdown grid-export-container">
+                        <button role="button" type="button" id="gridexport-@Model.GridId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="close grid-export">
+                            <span class="fas fa-download" aria-hidden="true" title="Export"></span>
+                            <span class="sr-only">Export</span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="gridexport-@Model.GridId">
+                            @foreach (var type in Model.GridExportTypes)
+                            {
+                                <li>
+                                    @switch (type)
+                                    {
+                                        // The data-export attribute should match the ExportType enum, as it is converted to an ExportType
+                                        // via the model binder
+                                        case ExportType.PDF:
+                                            <a data-export="PDF" href="#"><span class="far fa-file-pdf" aria-hidden="true"></span> Save as PDF</a>
+                                            break;
+                                        case ExportType.Excel:
+                                        <a data-export="Excel" href="#"><span class="far fa-file-excel" aria-hidden="true"></span> Export to Excel</a>
+                                            break;
+                                        case ExportType.CSV:
+                                        <a data-export="CSV" href="#"><span class="far fa-file-alt" aria-hidden="true"></span> Export to CSV</a>
+                                            break;
+                                    }
+                                </li>
+                            }
+                        </ul>
+
+                    </div>
+                }
+
+                Displaying records @Model.StartRecord.ToString("N0") - @Model.EndRecord.ToString("N0") of @Model.NumRecords.ToString("N0")
+                <!-- Hacky hack to make the baseline for this div align with the baseline for the grid-nav div -->
+                <select class="hidden" style="visibility: hidden" aria-hidden="true"></select>
+            </div>
+            @if (Model.ShowNavigation && Model.PageSize > 0)
+            {
+                <div class="grid-nav">
+                    @if (Model.AllowedPageSizes != null && Model.AllowedPageSizes.Count > 0)
+                    {
+                        <select name="PageSize">
+                            @foreach (var size in Model.AllowedPageSizes)
+                            {
+                                string check = size == Model.PageSize ? " selected" : String.Empty;
+                                <option value="@size" @check>@size</option>
+                            }
+                        </select>
+                        <span>Records per page</span>
+                    }
+
+                    @Html.Partial("~/Views/Common/Grid/GridNav.cshtml", Model)
+                </div>
+            }
+        </div>
+        <table class="table table-sm table-hover grid" data-rowselect="@Model.RowSelectType">
+            <thead>
+                <tr class="grid-headrow grid-headrow-primary">
+                    @if (Model.RowSelectType == RowSelectType.Multiple)
+                    {
+                        <th class="grid-row-select-col"></th>
+                    }
+
+                    @foreach (var col in Model.Columns)
+                    {
+                        List<string> classes = new List<string>() { "grid-col" };
+
+                        if (!col.Visible)
+                        {
+                            classes.Add("d-none");
+                        }
+
+                        if (col.Key)
+                        {
+                            classes.Add("key");
+                        }
+
+                        if (col.Sortable)
+                        {
+                            classes.Add("grid-sortable");
+                        }
+
+                        if (col.SortOrder.HasValue)
+                        {
+                            classes.Add("grid-sort-" + col.SortOrder.ToString().ToLowerInvariant());
+                        }
+
+                        <th class="@String.Join(" ", classes)" data-column="@col.ColumnName">
+                            @col.DisplayName
+                            @if (col.Sortable || col.SortOrder.HasValue)
+                            {
+                                switch (col.SortOrder)
+                                {
+                                    case SortOrder.Ascending:
+                                        <span class="fas fa-caret-up" aria-hidden="true"></span>
+                                        break;
+                                    case SortOrder.Descending:
+                                    <span class="fas fa-caret-down" aria-hidden="true"></span>
+                                        break;
+                                    default:
+                                    <span class="fas fa-sort" aria-hidden="true"></span>
+                                        break;
+                                }
+                            }
+                        </th>
+                    }
+
+                    @if (Model.ShowInlineDelete || Model.ShowInlineEdit)
+                    {
+                        <th class="grid-col grid-action-col"></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    <tr class="grid-row">
+                        @if (Model.RowSelectType == RowSelectType.Multiple)
+                        {
+                            <td class="grid-row-select"><input type="checkbox" /></td>
+                        }
+
+                        @foreach (var cell in row.Cells)
+                        {
+                            List<string> classes = new List<string>() { "grid-cell" };
+
+                            if (!cell.Column.Visible)
+                            {
+                                classes.Add("d-none");
+                            }
+
+                            if (Model.ShowInlineEdit && row.Editable && cell.Editable)
+                            {
+                                classes.Add("editable");
+                            }
+
+                            if (cell.Column.Key)
+                            {
+                                classes.Add("key");
+                            }
+
+                            <td data-property="@cell.Column.ColumnProperty" class="@String.Join(" ", classes)">
+                                <div class="grid-cell-value">@cell.Value</div>
+
+                                @if (Model.ShowInlineEdit && row.Editable && cell.Editable)
+                                {
+                                    <div class="grid-edit-template" style="display: none">@Html.EditTemplateFor(cell)</div>
+                                }
+                            </td>
+                        }
+
+                        @if (Model.ShowInlineDelete || Model.ShowInlineEdit)
+                        {
+                            // Close class is applied to buttons to get default bootstrap styling in order to not
+                            // "reinvent the wheel" when it comes to destyling buttons
+                            <td class="grid-cell grid-action-cell">
+                                @if (Model.ShowInlineDelete && row.Deletable)
+                                {
+                                    <button type="button" class="close grid-action grid-action-delete" aria-label="Delete" title="Delete" data-prompt="Are you sure you want to delete this record?">
+                                        <span class="fas fa-times" aria-hidden="true"></span>
+                                    </button>
+                                }
+
+                                @if (Model.ShowInlineEdit && row.Editable && row.Cells.Any(c => c.Editable))
+                                {
+                                    <button type="button" class="close grid-action grid-action-edit" aria-label="Edit" title="Edit">
+                                        <span class="fas fa-pencil-alt" aria-hidden="true"></span>
+                                    </button>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        if (Model.ShowNavigation && Model.PageSize > 0)
+        {
+            <div class="grid-footer">
+                <div class="grid-nav">
+                    @Html.Partial("~/Views/Common/Grid/GridNav.cshtml", Model)
+                </div>
+                <br style="clear: both" />
+            </div>
+        }
+    }
+</div> @* .grid-container *@

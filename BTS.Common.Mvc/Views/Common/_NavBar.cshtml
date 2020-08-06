@@ -1,0 +1,38 @@
+﻿@model BTS.Common.Mvc.NavBar
+
+@{
+    string homeClass = "nav-item";
+    string homeUrl = Url.Action("Index", "Home");
+
+    if (!String.IsNullOrEmpty(Model.HomeLink))
+    {
+        homeUrl = Model.HomeLink;
+    }
+
+    if (homeUrl == Request.Url.AbsolutePath)
+    {
+        homeClass += " active";
+    }
+}
+
+<div class="navbar-container mt-1">
+    <div class="container">
+        <nav class="navbar navbar-inverse navbar-expand-md d-none d-md-block">
+            <ul class="navbar-nav mr-auto">
+                <li class="@homeClass"><a href="@homeUrl" alt="Home"><i class="fas fa-home icon-white" aria-hidden="true"></i></a></li>
+                @foreach (var item in Model.Items)
+                {
+                    @item
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (ASUHeader.site_menu === undefined) {
+        ASUHeader.site_menu = {};
+    }
+
+    ASUHeader.site_menu.json = "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ToJsonString(Url)))";
+</script>

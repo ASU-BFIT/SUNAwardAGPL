@@ -1,0 +1,1559 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BTS.Common</name>
+    </assembly>
+    <members>
+        <member name="T:BTS.Common.ActiveDirectory.ActiveDirectory">
+            <summary>
+            Helper class for AD lookups
+            </summary>
+        </member>
+        <member name="F:BTS.Common.ActiveDirectory.ActiveDirectory.AffiliateId">
+            <summary>
+            Claim type for EmplId / Affiliate Id
+            </summary>
+        </member>
+        <member name="F:BTS.Common.ActiveDirectory.ActiveDirectory.IdentityType">
+            <summary>
+            The type of this ClaimsIdentity
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.ActiveDirectory.Default">
+            <summary>
+            Default AD instance
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.ActiveDirectory.Domain">
+            <summary>
+            Domain to query
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.ActiveDirectory.Container">
+            <summary>
+            Container to query
+            </summary>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a new ActiveDirectory instance. By default this queries the ASURITE domain.
+            </summary>
+            <param name="domain"></param>
+            <param name="container"></param>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.GetObject(System.String)">
+            <summary>
+            Fetches the entry for the given LDAP path
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.ObjectExists(System.String)">
+            <summary>
+            Checks if the given LDAP path exists
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.Search(System.String,System.String[])">
+            <summary>
+            Searches the directory
+            </summary>
+            <param name="query">LDAP query</param>
+            <param name="properties">Properties to load</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.GetUserInfo(System.String,System.Boolean)">
+            <summary>
+            Gets user info from AD
+            </summary>
+            <param name="samAccountNameOrSid">ASURITE or SID</param>
+            <param name="loadGroupNames">Whether or not to load group names (if false, the user's groups are not loaded)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.GetGroupMembers(System.String,System.Boolean)">
+            <summary>
+            Gets all members of a given group
+            </summary>
+            <param name="groupName">Group name or SID</param>
+            <param name="includeNestedMembers"></param>
+            <returns>List of ASURITEs for group members</returns>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.ActiveDirectory.GetAllGroupsAsync">
+            <summary>
+            Fetches all groups asynchronously
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.ActiveDirectory.AsuPerson">
+            <summary>
+            Encapsulates information about someone who is affiliated with ASU
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.Principal">
+            <summary>
+            The underlying ClaimsPrincipal for this person
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.Name">
+            <summary>
+            The person's full name. May contain (Student) at the end.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.FirstName">
+            <summary>
+            The person's first name. May be null.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.LastName">
+            <summary>
+            The person's last name. May be null.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.Email">
+            <summary>
+            The person's primary email address
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.Asurite">
+            <summary>
+            The person's ASURITE id
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.EmplId">
+            <summary>
+            The person's EmplId (Affiliate Id). May be null for non-employees.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.DepartmentCodes">
+            <summary>
+            All department codes that the user belongs to, in no particular order.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.Affiliations">
+            <summary>
+            All affiliations that the user has, in no particular order.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.ActiveDirectory.AsuPerson.Title">
+            <summary>
+            The person's job title. May be null.
+            </summary>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.AsuPerson.#ctor(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Constructs a new AsuPerson instance. See also AsuPerson.GetByAsurite()
+            for retrieving a class instance given an asurite.
+            </summary>
+            <param name="principal">Principal containing already-loaded user information</param>
+        </member>
+        <member name="M:BTS.Common.ActiveDirectory.AsuPerson.GetByAsurite(System.String)">
+            <summary>
+            Looks up a person given their ASURITE id.
+            </summary>
+            <param name="asurite">ASURITE to look up.</param>
+            <returns>AsuPerson instance if found, null if the ASURITE cannot be found.</returns>
+        </member>
+        <member name="T:BTS.Common.CAS.ServiceResponseType">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.ServiceResponseType.Item">
+            <remarks/>
+        </member>
+        <member name="T:BTS.Common.CAS.AuthenticationFailureType">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AuthenticationFailureType.code">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AuthenticationFailureType.Value">
+            <remarks/>
+        </member>
+        <member name="T:BTS.Common.CAS.ProxyFailureType">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.ProxyFailureType.code">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.ProxyFailureType.Value">
+            <remarks/>
+        </member>
+        <member name="T:BTS.Common.CAS.ProxySuccessType">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.ProxySuccessType.proxyTicket">
+            <remarks/>
+        </member>
+        <member name="T:BTS.Common.CAS.AttributesType">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AttributesType.authenticationDate">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AttributesType.longTermAuthenticationRequestTokenUsed">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AttributesType.isFromNewLogin">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AttributesType.memberOf">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AttributesType.Any">
+            <remarks/>
+        </member>
+        <member name="T:BTS.Common.CAS.AuthenticationSuccessType">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AuthenticationSuccessType.user">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AuthenticationSuccessType.attributes">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AuthenticationSuccessType.proxyGrantingTicket">
+            <remarks/>
+        </member>
+        <member name="P:BTS.Common.CAS.AuthenticationSuccessType.proxies">
+            <remarks/>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationContext">
+            <summary>
+            Wraps data used to authenticate against CAS as well as its response.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationContext.CasIdentity">
+            <summary>
+            The identity that CAS authenticated us as
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationContext.OtherIdentities">
+            <summary>
+            Other identities for this user, e.g. from Active Directory.
+            The OnAuthenticated handler should fill this in if it needs to persist
+            data about other identities into the session.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationContext.Properties">
+            <summary>
+            Internal OWIN properties for this context
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationContext.ServiceTicket">
+            <summary>
+            ST returned by CAS
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationContext.ProxyGrantingTicket">
+            <summary>
+            PGT returned by CAS, in the event we're talking to a proxy
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationContext.ProxyGrantingTicketIOU">
+            <summary>
+            PGT IOU returned by CAS, in the event we're talking to a proxy
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationContext.GetProxyServiceTicket(System.String)">
+            <summary>
+            Gets a service ticket for the given service. This should be given
+            to the service who then verifies it with CAS via proxyValidate.
+            NOTE: This performs an HTTP request to the CAS endpoint!
+            </summary>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationCookieProvider">
+            <summary>
+            Retrieves user identity data stored in the session cookie
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationCookieProvider.ValidateIdentity(Microsoft.Owin.Security.Cookies.CookieValidateIdentityContext)">
+            <summary>
+            Retrieves user identity data stored in the session cookie
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationExtensions">
+            <summary>
+            Extension methods for CAS
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationExtensions.UseCasAuthentication(Owin.IAppBuilder,BTS.Common.CAS.CasAuthenticationOptions)">
+            <summary>
+            Use CAS auth to validate users
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationExtensions.ValidateServiceTicket(System.Security.Principal.IPrincipal,System.String)">
+            <summary>
+            Tests if the given service ticket matches the existing user's CAS auth session
+            </summary>
+            <param name="principal">User to test</param>
+            <param name="ticket">Ticket to validate against</param>
+            <returns>True if the saved ticket matches the passed-in ticket, false otherwise</returns>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationHandler">
+            <summary>
+            Middleware to handle CAS authentication
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationHandler.ApplyResponseChallengeAsync">
+            <summary>
+            Redirect user to CAS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationHandler.InvokeAsync">
+            <summary>
+            Validate CAS auth
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationHandler.AuthenticateCoreAsync">
+            <summary>
+            Validate ST and set up user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationMiddleware">
+            <summary>
+            Middleware to log into CAS
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationMiddleware.#ctor(Microsoft.Owin.OwinMiddleware,Owin.IAppBuilder,BTS.Common.CAS.CasAuthenticationOptions)">
+            <summary>
+            Set up middleware for the app
+            </summary>
+            <param name="next"></param>
+            <param name="app"></param>
+            <param name="options"></param>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationMiddleware.CreateHandler">
+            <summary>
+            Creates the auth handler for this middleware
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.CAS.IdentityList">
+            <summary>
+            List of identities the user has
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.IdentityList.Items">
+            <summary>
+            Items in collection
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.IdentityList.Serialize">
+            <summary>
+            Stores the identity list into a string for database writes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.IdentityList.Deserialize(System.String)">
+            <summary>
+            Reads stored version into identity list
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationOptions">
+            <summary>
+            CAS-specific authentication options
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationOptions.#ctor">
+            <summary>
+            Set up default options
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.CasVersion">
+            <summary>
+            Version of the CAS protocol to use (1, 2, or 3).
+            Using either 2 or 3 is recommended, default 2.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.CasUrlBase">
+            <summary>
+            URL to CAS instance.
+            Default https://weblogin.asu.edu/cas/
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.CallbackPath">
+            <summary>
+            Location to redirect client to after authentication.
+            This path is used internally, and application code on this path is never called.
+            It is usually not necessary to change this from the default. If you wish to run
+            application code after authentication, set LoginPath instead.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.LoginPath">
+            <summary>
+            Location to redirect client to after authentication. The client is first
+            redirected to CallbackPath in order to set up the user principal, and then is redirected
+            here afterwards if this is set. This path will get a ReturnUrl query parameter so that
+            it can further redirect the user to their original destination. If left default, the client
+            will be redirected directly to the location specified in ReturnUrl.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.NoPermsPath">
+            <summary>
+            Location to redirect client to in the event that they have signed onto CAS
+            but do not have the correct role permissions to view the page. If null,
+            a 403 will be issued if the user does not have permissions.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.Renew">
+            <summary>
+            If true, requires that the user re-enters their credentials
+            instead of relying on existing SSO sessions.
+            Default is false.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.Gateway">
+            <summary>
+            If true, will not prompt the user for credentials even if they
+            do not have an SSO session. The CallbackPath will be called
+            without any ticket parameter.
+            Default is false.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.ProxyServer">
+            <summary>
+            If true, indicates that this application should act as a proxy server
+            and request a Proxy Granting Ticket to authenticate other apps that
+            this application proxies to. To get a Session Ticket for a proxied
+            application, call GetProxySession() on the authentication context.
+            Default is false.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.ProxyCallback">
+            <summary>
+            Path used to retrive the proxy granting ticket.
+            This path should exist and allow unauthenticated access, but return no data.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.ProxyClient">
+            <summary>
+            If true, indicates the application receives a proxy ticket instead
+            of a service ticket (e.g. we're receiving auth info from a proxy
+            rather than CAS itself). This lets us know to hit the proxy validation
+            endpoints rather than the regular service ticket validation endpoints.
+            If true, TrustedProxies MUST be set and all proxies giving us the ticket
+            MUST be present in the list. Can be set to true even if not using a proxy.
+            Default is false.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.TrustedProxies">
+            <summary>
+            Trusted proxy servers. If we are acting as a proxy client, we verify
+            all parent proxies appear in this list. If they do not, we refuse to
+            authenticate the request.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.Method">
+            <summary>
+            Protocol version 3 only:
+            What HTTP method should be used when redirecting the client to
+            the CallbackPath.
+            Default is null, meaning this parameter is excluded from the request
+            (which then causes CAS to default to GET)
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.SignInAsAuthenticationType">
+            <summary>
+            AuthenticationType of the middleware used to actually handle the sign in.
+            The default is the default signinas type set for the application.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.SessionStore">
+            <summary>
+            Underlying session store used to persist our session data. This should be
+            the same object as the session store passed to the cookie middleware,
+            or null if not using the cookie middleware.
+            Required for proper Single Log Out (SLO) functionality.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.OnAuthenticated">
+            <summary>
+            Callback called when an authentication occurs, to allow for additional
+            things to happen on successful authentication (such as retrieving group
+            information from Active Directory). By default this loads AD info.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.OnMakeClaims">
+            <summary>
+            Callback right before the ClaimsIdentity is returned to the cookie handler
+            (or whatever the default sign in handler is) in order to add additional claims
+            to the cookie. Can be used for setting security permissions, for example.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.OnSignOut">
+            <summary>
+            Callback when logging a user out, to clear any application-specific stuff
+            tied to the user's CAS session.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.ImpersonationPath">
+            <summary>
+            Location that a client visits to impersonate someone else. If we receive a request
+            on this path, we fire CanImpersonate to let the application determine if the current
+            user is allowed to impersonate other users. If that returns a yes result, we then
+            log in as the impersonated user, and subsequently call OnImpersonate to alert the
+            application that an impersonation happened. OnMakeClaims is called twice, once for
+            the real client and once for the impersonated client.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.CanImpersonate">
+            <summary>
+            Callback to determine whether or not the given user is allowed to impersonate other
+            users. If not set, impersonation is not allowed.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationOptions.OnImpersonation">
+            <summary>
+            Callback to alert the application that a user was impersonated. The first identity is
+            the user performing the impersonation and the second identity is the user being impersonated.
+            </summary>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationSession">
+            <summary>
+            Stores data about a CAS session
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSession.SessionId">
+            <summary>
+            Opaque session ID, for storing in a persistent data store
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSession.Data">
+            <summary>
+            Opaque data corresponding to this session, for storing in a persistent data store
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSession.Expires">
+            <summary>
+            When the session expires
+            </summary>
+        </member>
+        <member name="T:BTS.Common.CAS.CasAuthenticationSessionStore">
+            <summary>
+            Wrapper around a persistent store to hold CAS session data
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSessionStore.ExpirationTime">
+            <summary>
+            The number of minutes a session needs to be inactive in order to expire.
+            One is usually still logged into CAS despite local session being inactive,
+            so this really only serves a purpose of forcing a relog after a while; not sure the usefulness of that
+            (we could probably force one to actually reauth to CAS rather than a silent redirect if desired)
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSessionStore.GetSession">
+            <summary>
+            Gets session details from the backing store. This callback cannot be null,
+            although it may return a null result.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSessionStore.StoreSession">
+            <summary>
+            Store session details to the backing store. This callback cannot be null.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSessionStore.RemoveSession">
+            <summary>
+            Remove a session from the backing store. This callback may be null.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.CAS.CasAuthenticationSessionStore.RenewSession">
+            <summary>
+            Renew a session in the backing store, updating its expiration time.
+            This callback may be null.
+            </summary>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.#ctor(Owin.IAppBuilder)">
+            <summary>
+            Constructs a new instance of the session store for the application
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.Remove(System.String)">
+            <summary>
+            Destroys a session from the session store
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.RemoveAsync(System.String)">
+            <summary>
+            Asynchronously destroys a session from the session store
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.Renew(System.String,Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Extends the expiration time of a session in the session store
+            </summary>
+            <param name="key"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.RenewAsync(System.String,Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Asynchronously extends the expiration time of a session in the session store
+            </summary>
+            <param name="key"></param>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.Retrieve(System.String)">
+            <summary>
+            Fetches a session from the session store
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.RetrieveAsync(System.String)">
+            <summary>
+            Asynchronously fetches a session from the session store
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.Store(Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Writes session data to the session store
+            </summary>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.StoreAsync(Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Asynchronously writes session data to the session store
+            </summary>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.CAS.CasAuthenticationSessionStore.GetKey(System.String)">
+            <summary>
+            Retrieves the Session ID given a service ticket
+            </summary>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.CAS.Constants">
+            <summary>
+            Constant strings for internal use
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CAS.Constants.CAS">
+            <summary>
+            CAS
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CAS.Constants.RETURN_URL">
+            <summary>
+            Return URL
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CAS.Constants.SERVICE_TICKET">
+            <summary>
+            Service Ticket
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CAS.Constants.PROXY_GRANTING_TICKET">
+            <summary>
+            Proxy Granting Ticket
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CAS.Constants.IDENTITY_PROP">
+            <summary>
+            List of additional identities in the AuthenticationTicket
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CAS.Constants.IDENTITY_CLAIM">
+            <summary>
+            Identity Claim
+            </summary>
+        </member>
+        <member name="T:BTS.Common.CAS.NotAuthorizedException">
+            <summary>
+            Indicates that the user is not authorized. Applications can throw
+            this exception in OnAuthorized or OnMakeClaims to tell our library
+            that we should reject this user account (they can auth to CAS but have
+            no permission for our application).
+            </summary>
+        </member>
+        <member name="T:BTS.Common.DateExtensions">
+            <summary>
+            DateTime extensions
+            </summary>
+        </member>
+        <member name="M:BTS.Common.DateExtensions.ToAsuDateTimeString(System.DateTime)">
+            <summary>
+            Converts this DateTime into a string with date and time formatted according to ASU branding standards
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.DateExtensions.ToAsuDateString(System.DateTime)">
+            <summary>
+            Converts this DateTime into a string with date formatted according to ASU branding standards
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.DateExtensions.ToAsuTimeString(System.DateTime)">
+            <summary>
+            Converts this DateTime into a string with time formatted according to ASU branding standards
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.DateExtensions.ToAsuTimeString(System.TimeSpan)">
+            <summary>
+            Converts this TimeSpan into a string with time formatted according to ASU branding standards
+            </summary>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.DictionaryExtensions">
+            <summary>
+            Extension methods for Dictionary
+            </summary>
+        </member>
+        <member name="M:BTS.Common.DictionaryExtensions.Deconstruct``2(System.Collections.Generic.KeyValuePair{``0,``1},``0@,``1@)">
+            <summary>
+            Converts a KeyValuePair into its key and value (as out params)
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="keyValuePair"></param>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="T:BTS.Common.DisposableWrapper">
+            <summary>
+            Class to wrap something that is not disposable into an IDisposable to enable a using pattern.
+            This can be useful for e.g. database connections where Open() and Close() must otherwise be manually called.
+            Wrapping such in this class would ensure that Close() is called without needing to provide tons of boilerplate code each time it is used.
+            </summary>
+        </member>
+        <member name="M:BTS.Common.DisposableWrapper.#ctor(System.Action,System.Action)">
+            <summary>
+            Construct a new DisposableWrapper
+            </summary>
+            <param name="open">Callback to execute immediately</param>
+            <param name="dispose">Callback to execute once this wrapper leaves the scope of the using() block</param>
+        </member>
+        <member name="M:BTS.Common.DisposableWrapper.Dispose">
+            <summary>
+            Calls the wrapped dispose callback
+            </summary>
+        </member>
+        <member name="M:BTS.Common.DisposableWrapper.Dispose(System.Boolean)">
+            <summary>
+            Calls the wrapped dispose callback
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="T:BTS.Common.CsvQuoteMode">
+            <summary>
+            When values should be quoted when exporting to CSV
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CsvQuoteMode.Always">
+            <summary>
+            Values are always quoted
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CsvQuoteMode.Never">
+            <summary>
+            Values are never quoted, this is an error if a value contains the delimiter
+            </summary>
+        </member>
+        <member name="F:BTS.Common.CsvQuoteMode.AsNeeded">
+            <summary>
+            Values are only quoted if they contain the delimiter or other special characters
+            </summary>
+        </member>
+        <member name="T:BTS.Common.Exporter`1">
+            <summary>
+            Handles exporting sequences of objects to various formats such as .csv, .xlsx, and .pdf
+            To export to Excel (xlsx), add a reference to BTS.Common.Interop.dll and import the BTS.Common.Excel namespace
+            To export to PDF, add a reference to BTS.Common.Reporting.dll and import the BTS.Common.Reporting namespace
+            </summary>
+            <typeparam name="T">Data class to export</typeparam>
+        </member>
+        <member name="P:BTS.Common.Exporter`1.Metadata">
+            <summary>
+            Some export types support embedded metadata. For example, in Excel and PDF exports this metadata will generally
+            appear above the normal data in a header block. See each individual export method for how it handles metadata.
+            CSV export does not embed any metadata. This field may be modified after being set, do not rely on it being unchanged
+            between construction of Exporter&lt;T&gt; and after calling export methods.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Exporter`1.Data">
+            <summary>
+            Data to export
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Exporter`1.SortPredicate">
+            <summary>
+            Function to sort the data before export
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Exporter`1.FilterPredicate">
+            <summary>
+            Function to filter the data before export
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Exporter`1.PropInfo">
+            <summary>
+            For custom calls that are not pulling public properties from T. The dynamic object should have a string property
+            Name with the property name, and an instance method object GetValue(object) which, given an instance of T, should return the
+            data value in that T instance named by Name. This list is further filtered and sorted by FilterPredicate and SortPredicate, respectively.
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Exporter`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Func{System.String,System.String,System.Int32},System.Func{System.String,System.Boolean},System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Creates a new Exporter for the given data
+            </summary>
+            <param name="data">Data to write, this is expected to be an enumeration of objects whose public properties will be written</param>
+            <param name="sortPredicate">The sort order of columns in the exported result, return values should allow for a strict total ordering of column names</param>
+            <param name="filterPredicate">Whether or not a particular public property should be included in the export</param>
+            <param name="propInfo">Property info, usually not required unless doing funky things</param>
+        </member>
+        <member name="M:BTS.Common.Exporter`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Creates a new Exporter for the given data
+            </summary>
+            <param name="data">Data to write, this is expected to be an enumeration of objects whose public properties will be written</param>
+            <param name="fields">The fields in data we should write, all of these must be public properties. Ensure there are no duplicates</param>
+            <param name="propInfo">Property info, usually not required unless doing funky things</param>
+        </member>
+        <member name="M:BTS.Common.Exporter`1.ToCsv(System.String,System.Boolean,BTS.Common.CsvQuoteMode)">
+            <summary>
+            Exports a list of data into a .csv file
+            </summary>
+            <param name="path">Filename to write data to</param>
+            <param name="includeHeaders">If true, the first row will consist of a list of column labels derived either from the DisplayName attribute or the property name</param>
+            <param name="quoteMode">Determines when values in the csv will be quoted</param>
+        </member>
+        <member name="M:BTS.Common.Exporter`1.ToCsv(System.IO.Stream,System.Boolean,BTS.Common.CsvQuoteMode)">
+            <summary>
+            Exports a list of data into a stream
+            </summary>
+            <param name="stream">Stream to write data to</param>
+            <param name="includeHeaders">If true, the first row will consist of a list of column labels derived either from the DisplayName attribute or the property name</param>
+            <param name="quoteMode">Determines when values in the csv will be quoted</param>
+        </member>
+        <member name="M:BTS.Common.Exporter`1.ToCsv(System.IO.TextWriter,System.Boolean,BTS.Common.CsvQuoteMode)">
+            <summary>
+            Exports a list of data into csv format to the specified TextWriter
+            </summary>
+            <param name="writer">Place to write data to</param>
+            <param name="includeHeaders">If true, the first row will consist of a list of column labels derived either from the DisplayName attribute or the property name</param>
+            <param name="quoteMode">Determines when values in the csv will be quoted</param>
+        </member>
+        <member name="T:BTS.Common.KeyedCollection`1">
+            <summary>
+            A key-value store which can be accessed either by string key or int index and serialized into XML.
+            </summary>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:BTS.Common.KeyedCollection`1.#ctor">
+            <summary>
+            Construct a new empty KeyedCollection
+            </summary>
+        </member>
+        <member name="P:BTS.Common.KeyedCollection`1.Item(System.Int32)">
+            <summary>
+            Retrieves or sets the value at the given index (in insertion order)
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BTS.Common.KeyedCollection`1.Item(System.String)">
+            <summary>
+            Retrieves or sets the value at the given key. Should the key exist multiple times
+            in the collection, this operates on the first instance of the key found (in insertion order).
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BTS.Common.KeyedCollection`1.IsReadOnly">
+            <summary>
+            Whether or not this collection is read only
+            </summary>
+        </member>
+        <member name="M:BTS.Common.KeyedCollection`1.Add(System.String,`0)">
+            <summary>
+            Adds a key to the end of the collection
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:BTS.Common.KeyedCollection`1.Clear">
+            <summary>
+            Removes all elements from the collection
+            </summary>
+        </member>
+        <member name="M:BTS.Common.KeyedCollection`1.System#Collections#Generic#ICollection{System#Collections#Generic#KeyValuePair{System#String,TValue}}#Add(System.Collections.Generic.KeyValuePair{System.String,`0})">
+            <summary>
+            Adds a key to the end of the collection
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:BTS.Common.KeyedCollection`1.GetEnumerator">
+            <summary>
+            Get an enumerator for the collection in insertion order
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.LinqExtensions">
+            <summary>
+            Extension methods for LINQ
+            </summary>
+        </member>
+        <member name="M:BTS.Common.LinqExtensions.GetPropertyInfo(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Retrieves PropertyInfo for the property specified in the lambda expression. The property must be publicly accessible.
+            Additionally, the property chain to arrive at the specified property must all be public properties (or indexes thereon).
+            </summary>
+            <param name="expr"></param>
+            <returns>Returns null if the lambda expression is not a single expression returning a property</returns>
+        </member>
+        <member name="M:BTS.Common.LinqExtensions.GetPropertyChain(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Gets the chain for this expression tree
+            </summary>
+            <param name="expr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.LinqExtensions.ToKeyedCollection``1(System.Collections.Specialized.NameObjectCollectionBase,System.Func{System.Object,``0})">
+            <summary>
+            Convert to a keyed collection
+            </summary>
+            <typeparam name="TValue"></typeparam>
+            <param name="collection"></param>
+            <param name="elementSelector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.LinqExtensions.ToKeyedCollection``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,``1})">
+            <summary>
+            Convert to a keyed collection
+            </summary>
+            <typeparam name="TInput"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="iterable"></param>
+            <param name="keySelector"></param>
+            <param name="elementSelector"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.OrderedDictionary`2">
+            <summary>
+            Dictionary that maintains key insertion order
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.#ctor">
+            <summary>
+            Constructs a new empty OrderedDictionary with a default equality comparer
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            Constructs an OrderedDictionary populated with the passed-in items and a default equality comparer
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Constructs a new empty OrderedDictionary with the specified equality comparer
+            </summary>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}},System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Constructs an OrderedDictionary populated with the passed-in items and the specified equality comparer
+            </summary>
+            <param name="items"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.Item(`0)">
+            <summary>
+            Gets or sets the value corresponding to the given key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.Item(System.Int32)">
+            <summary>
+            Gets or sets the value corresponding to the given index in insertion order
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.Count">
+            <summary>
+            Retrieves the number of items in the dictionary
+            </summary>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.Keys">
+            <summary>
+            Retrieves the collection of all keys in the dictionary
+            </summary>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.Values">
+            <summary>
+            Retrieves the values of all items in the dictionary
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.Add(`0,`1)">
+            <summary>
+            Adds a new key to the dictionary
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.Remove(`0)">
+            <summary>
+            Removes the specified key from the dictionary
+            </summary>
+            <param name="key"></param>
+            <returns>Returns true if the key was found and removed, and false if the key was not found</returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.RemoveAt(System.Int32)">
+            <summary>
+            Removes the item at the specified index
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ContainsKey(`0)">
+            <summary>
+            Checks whether or not the dictionary contains the specified key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ContainsValue(`1)">
+            <summary>
+            Checks whether or not the dictionary contains the specified value
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+            Tries to read the value of the specified key
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns>True if the key was found (value is populated), false if the key was not found (value is defaulted)</returns>
+        </member>
+        <member name="T:BTS.Common.OrderedDictionary`2.KeyCollection">
+            <summary>
+            Represents a collection of keys in the dictionary
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.KeyCollection.#ctor(BTS.Common.OrderedDictionary{`0,`1})">
+            <summary>
+            Constructs a new KeyCollection for the specified dictionary
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.KeyCollection.Count">
+            <summary>
+            Retrieves the number of keys in this collection
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.KeyCollection.GetEnumerator">
+            <summary>
+            Gets an enumerator over the collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.KeyCollection.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the collection into an array
+            </summary>
+            <param name="array"></param>
+            <param name="index"></param>
+        </member>
+        <member name="T:BTS.Common.OrderedDictionary`2.KeyCollection.Enumerator">
+            <summary>
+            Represents an enumerator over a key collection
+            </summary>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.KeyCollection.Enumerator.Current">
+            <summary>
+            Current key
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.KeyCollection.Enumerator.MoveNext">
+            <summary>
+            Advance the enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.KeyCollection.Enumerator.Dispose">
+            <summary>
+            This method does not do anything
+            </summary>
+        </member>
+        <member name="T:BTS.Common.OrderedDictionary`2.ValueCollection">
+            <summary>
+            Stores a collection of all values in the dictionary
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ValueCollection.#ctor(BTS.Common.OrderedDictionary{`0,`1})">
+            <summary>
+            Constructs a new ValueCollection for the dictionary
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.ValueCollection.Count">
+            <summary>
+            Retrieves the number of items in the collection
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ValueCollection.GetEnumerator">
+            <summary>
+            Gets an enumerator over the collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ValueCollection.CopyTo(`1[],System.Int32)">
+            <summary>
+            Copies the collection to an array
+            </summary>
+            <param name="array"></param>
+            <param name="index"></param>
+        </member>
+        <member name="T:BTS.Common.OrderedDictionary`2.ValueCollection.Enumerator">
+            <summary>
+            An enumerator over a ValueCollection
+            </summary>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.ValueCollection.Enumerator.Current">
+            <summary>
+            Current value
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ValueCollection.Enumerator.MoveNext">
+            <summary>
+            Advance the enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.ValueCollection.Enumerator.Dispose">
+            <summary>
+            This method does nothing
+            </summary>
+        </member>
+        <member name="T:BTS.Common.OrderedDictionary`2.Enumerator">
+            <summary>
+            An enumerator over all KeyValuePairs in the dictionary
+            </summary>
+        </member>
+        <member name="P:BTS.Common.OrderedDictionary`2.Enumerator.Current">
+            <summary>
+            Current KeyValuePair
+            </summary>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.Enumerator.MoveNext">
+            <summary>
+            Advances the enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.OrderedDictionary`2.Enumerator.Dispose">
+            <summary>
+            This method does nothing
+            </summary>
+        </member>
+        <member name="T:BTS.Common.ReflectionExtensions">
+            <summary>
+            Extension methods which make use of Reflection
+            </summary>
+        </member>
+        <member name="M:BTS.Common.ReflectionExtensions.GetDisplayName(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the display name from DisplayAttribute or DisplayNameAttribute
+            </summary>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ReflectionExtensions.GetShortName(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the short name for display in grid columns
+            </summary>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ReflectionExtensions.GetDescription(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the description from DisplayAttribute or DescriptionAttribute
+            </summary>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.ReflectionExtensions.ToDisplayString(System.Enum)">
+            <summary>
+            Gets a string corresponding to the display name of the enum value
+            </summary>
+            <param name="e"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.SerializableDictionary`2">
+            <summary>
+            Dictionary which can be serialized to XML
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor">
+            <summary>
+            Constructs a new empty dictionary
+            </summary>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor(System.Int32)">
+            <summary>
+            Constructs a new empty dictionary with initial capacity
+            </summary>
+            <param name="capacity"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Constructs a new empty dictionary with the specified equality comparer
+            </summary>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+            <summary>
+            Copies a dictionary into ours
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Constructs a new empty dictionary with the specified capacity and equality comparer
+            </summary>
+            <param name="capacity"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Deserializes a dictionary
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1},System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Copies a dictionary using the specified equality comparer
+            </summary>
+            <param name="dictionary"></param>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.GetSchema">
+            <summary>
+            Returns null (we do not have an XML schema for SerializableDictionary)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Populates dictionary from XML
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:BTS.Common.SerializableDictionary`2.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Serializes dictionary to XML
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:BTS.Common.Tree`2">
+            <summary>
+            Generic Tree collection that can be accessed via a top-to-bottom approach or iterated over in a depth-first manner.
+            The Tree collection is NOT checked for the introduction of loops, so please take care when using this.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Key">
+            <summary>
+            Key for this node
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Value">
+            <summary>
+            Value of this node
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Parent">
+            <summary>
+            The parent node of this current node, or null if we are the root.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Count">
+            <summary>
+            Gets a deep count of total number of elements in the tree. To get a shallow count, access Subtrees.Count.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Depth">
+            <summary>
+            The current depth of this tree node, with 0 being the topmost node (tree root).
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Subtrees">
+            <summary>
+            All child nodes of this node
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.IsReadOnly">
+            <summary>
+            Returns false (the tree is not read only)
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Tree`2.Item(`0)">
+            <summary>
+            Provides direct access to a child node, shorthand for Subtrees[key].
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Tree`2.#ctor">
+            <summary>
+            Creates a new empty root node of the tree
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Tree`2.#ctor(`1)">
+            <summary>
+            Creates a new root node of the tree with the specified value
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:BTS.Common.Tree`2.#ctor(`0,`1)">
+            <summary>
+            Creates a new root node of the tree with the specified key and value
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:BTS.Common.Tree`2.Add(`0,`1)">
+            <summary>
+            Adds a new node under this one with the given key and value
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:BTS.Common.Tree`2.ContainsKey(`0)">
+            <summary>
+            Check if any of our immediate children contain the specified key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Tree`2.Remove(`0)">
+            <summary>
+            Removes the node with the given key from our immediate children
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Tree`2.Clear">
+            <summary>
+            Deletes all children
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Tree`2.GetEnumerator">
+            <summary>
+            Enumerates over us and all of our children
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Tree`2.Equals(System.Object)">
+            <summary>
+            Compares if two tree nodes are the same based on their key and value.
+            Note that this does NOT consider parent/child relationships in determining equality!
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Tree`2.GetHashCode">
+            <summary>
+            GetHashCode implementation
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:BTS.Common.Tree`2.System#Collections#ICollection#SyncRoot">
+            <summary>
+            Due to the deep nesting of collections, this does NOT guarantee that no other threads will utilize the underlying collections.
+            </summary>
+        </member>
+        <member name="T:BTS.Common.TreeEnumerator`2">
+            <summary>
+            Represents a depth-first enumerator over the tree
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="P:BTS.Common.TreeEnumerator`2.Current">
+            <summary>
+            Returns the current node
+            </summary>
+        </member>
+        <member name="M:BTS.Common.TreeEnumerator`2.Dispose">
+            <summary>
+            Releases all resources held by the enumerator
+            </summary>
+        </member>
+        <member name="M:BTS.Common.TreeEnumerator`2.MoveNext">
+            <summary>
+            Advances the enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TreeEnumerator`2.Reset">
+            <summary>
+            Reset() is not supported on Tree&lt;TKey, TValue&gt;
+            </summary>
+        </member>
+        <member name="T:BTS.Common.TypeExtensions">
+            <summary>
+            Extension methods for types
+            </summary>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsNumericType(System.Type)">
+            <summary>
+            Check if type is numeric
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsSignedInteger(System.Type)">
+            <summary>
+            Check if type is signed integer
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsUnsignedInteger(System.Type)">
+            <summary>
+            Check if type is unsigned integer
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsFloatingPoint(System.Type)">
+            <summary>
+            Check if type is floating point
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsFixedPoint(System.Type)">
+            <summary>
+            Check if type is fixed point
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsZero(System.Object)">
+            <summary>
+            Check if the object is numeric and if so, if it is equal to 0.
+            </summary>
+            <param name="number"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.DiscardNullable(System.Type)">
+            <summary>
+            Returns the underlying type for a nullable
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.TypeExtensions.IsNullable(System.Type)">
+            <summary>
+            Checks if type is nullable
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ASU.Web.Auth.AsuritePrincipal">
+            <summary>
+            Backwards-compatibility wrapper around our OWIN ClaimsPrincipal.
+            A ClaimsPrincipal can be transparently down-casted to an instance of this class.
+            </summary>
+        </member>
+        <member name="P:ASU.Web.Auth.AsuritePrincipal.Identity">
+            <summary>
+            The underlying Identity for this Principal
+            </summary>
+        </member>
+        <member name="P:ASU.Web.Auth.AsuritePrincipal.AsuriteID">
+            <summary>
+            The ASURITE id of the user
+            </summary>
+        </member>
+        <member name="P:ASU.Web.Auth.AsuritePrincipal.AffiliateID">
+            <summary>
+            The Affiliate id / employee id of the user
+            </summary>
+        </member>
+        <member name="P:ASU.Web.Auth.AsuritePrincipal.FirstName">
+            <summary>
+            The user's first name
+            </summary>
+        </member>
+        <member name="P:ASU.Web.Auth.AsuritePrincipal.LastName">
+            <summary>
+            The user's last name
+            </summary>
+        </member>
+        <member name="P:ASU.Web.Auth.AsuritePrincipal.Name">
+            <summary>
+            The user's display name (usually first and last names)
+            </summary>
+        </member>
+        <member name="M:ASU.Web.Auth.AsuritePrincipal.#ctor">
+            <summary>
+            Constructs a new AsuritePrincipal.
+            </summary>
+        </member>
+        <member name="M:ASU.Web.Auth.AsuritePrincipal.IsInRole(System.String)">
+            <summary>
+            Checks if this principal belongs to the specified role
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ASU.Web.Auth.AsuritePrincipal.op_Explicit(System.Security.Claims.ClaimsPrincipal)~ASU.Web.Auth.AsuritePrincipal">
+            <summary>
+            Convert an arbitrary ClaimsPrincipal into an AsuritePrincipal.
+            The ClaimsPrincipal must have identities which indicate a successful CAS logon.
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="T:ASU.Web.Auth.Extensions">
+            <summary>
+            Extension methods to convert to AsuritePrincipals
+            </summary>
+        </member>
+        <member name="M:ASU.Web.Auth.Extensions.AsAsuritePrincipal(System.Security.Principal.IPrincipal)">
+            <summary>
+            Convert an arbitrary IPrincipal to an AsuritePrincipal. Returns null on failure
+            (as if using the "as" operator)
+            </summary>
+            <param name="principal"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

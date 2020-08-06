@@ -1,0 +1,423 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BTS.Common.Web</name>
+    </assembly>
+    <members>
+        <member name="T:BTS.Common.Web.DeferredSessionStore">
+            <summary>
+            A session store using ASP.NET sessions which allows for setting up a session stub
+            early in the authentication process, and then filling in the remaining session details
+            once ASP.NET sessions are fully initialized. This session store is not fully compatible
+            with the &lt;authorize&gt; section in Web.config -- restricting authorization to * or ?
+            is supported, but specifying individual groups is not. Application code should do the group
+            filtering instead.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Web.DeferredSessionStore.Expiration">
+            <summary>
+            How long each session lasts before it expires, in minutes.
+            Sliding expiration is used, so a session could last longer than this.
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.#ctor(Owin.IAppBuilder,System.Int32)">
+            <summary>
+            Constructs a new DeferredSessionStore
+            </summary>
+            <param name="app"></param>
+            <param name="expiration"></param>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.Remove(System.String)">
+            <summary>
+            Destroys a session from the session store
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.RemoveAsync(System.String)">
+            <summary>
+            Asynchronously destroys a session from the session store
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.Renew(System.String,Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Extends the expiration time of a session in the session store
+            </summary>
+            <param name="key"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.RenewAsync(System.String,Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Asynchronously extends the expiration time of a session in the session store
+            </summary>
+            <param name="key"></param>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.Retrieve(System.String)">
+            <summary>
+            Fetches a session from the session store
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.RetrieveAsync(System.String)">
+            <summary>
+            Asynchronously fetches a session from the session store
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.Store(Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Writes session data to the session store
+            </summary>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.StoreAsync(Microsoft.Owin.Security.AuthenticationTicket)">
+            <summary>
+            Asynchronously writes session data to the session store
+            </summary>
+            <param name="ticket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.DeferredSessionStore.RunDeferredActions(System.Web.HttpContext)">
+            <summary>
+            Executes all deferred actions. This should only be called
+            after ASP.NET sessions are initialized. In the event that we attempt
+            to retrieve an invalid session, this will log the user out.
+            </summary>
+            <param name="context">HttpContext for the current request.</param>
+        </member>
+        <member name="T:BTS.Common.Web.ICasSessionStore">
+            <summary>
+            Applications should implement this interface when using
+            CAS authentication with session storage, and pass an instance
+            of that class to the middleware.
+            </summary>
+        </member>
+        <member name="P:BTS.Common.Web.ICasSessionStore.ExpirationTime">
+            <summary>
+            Number of minutes for which the session is valid
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Web.ICasSessionStore.GetSession(System.String)">
+            <summary>
+            Retrieve a session given an opaque unique session key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.ICasSessionStore.StoreSession(BTS.Common.CAS.CasAuthenticationSession)">
+            <summary>
+            Store a session in the database
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="M:BTS.Common.Web.ICasSessionStore.RemoveSession(BTS.Common.CAS.CasAuthenticationSession)">
+            <summary>
+            Remove a session from the database
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="M:BTS.Common.Web.ICasSessionStore.RenewSession(BTS.Common.CAS.CasAuthenticationSession)">
+            <summary>
+            Renew the expiration time of a session, and store the updated
+            expiration time in the database
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="T:BTS.Common.Web.OwinExtensions">
+            <summary>
+            Extensions for OWIN middleware.
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionStore(Owin.IAppBuilder,System.String,BTS.Common.Web.ICasSessionStore)">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, a generic session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="sessionStore">Instance of the application-specific session storage to use.</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionCookies(Owin.IAppBuilder,System.String)">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, the ASP.NET session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            <para>
+            You should attempt to call UseCasAuthWithSessionStore instead if possible; ASP.NET sessions should only be used
+            if such use is unavoidable (such as when porting an existing application that already uses session data heavily)
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionStore(Owin.IAppBuilder,System.String,BTS.Common.Web.ICasSessionStore,Microsoft.Owin.PathString)">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, a generic session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="sessionStore">Instance of the application-specific session storage to use.</param>
+            <param name="loginPath">Path to application-specific login code (setting roles, determining access, etc.)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionCookies(Owin.IAppBuilder,System.String,Microsoft.Owin.PathString)">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, the ASP.NET session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            <para>
+            You should attempt to call UseCasAuthWithSessionStore instead if possible; ASP.NET sessions should only be used
+            if such use is unavoidable (such as when porting an existing application that already uses session data heavily)
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="loginPath">Path to application-specific login code (setting roles, determining access, etc.)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionStore(Owin.IAppBuilder,System.String,BTS.Common.Web.ICasSessionStore,Microsoft.Owin.PathString,Microsoft.Owin.PathString)">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, a generic session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="sessionStore">Instance of the application-specific session storage to use.</param>
+            <param name="loginPath">Path to application-specific login code (setting roles, determining access, etc.)</param>
+            <param name="noPermsPath">Path to page where user is redirected if we get an authentication loop (indicating they are logged in but still unable to access a particular page)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionCookies(Owin.IAppBuilder,System.String,Microsoft.Owin.PathString,Microsoft.Owin.PathString)">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, the ASP.NET session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            <para>
+            You should attempt to call UseCasAuthWithSessionStore instead if possible; ASP.NET sessions should only be used
+            if such use is unavoidable (such as when porting an existing application that already uses session data heavily)
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="loginPath">Path to application-specific login code (setting roles, determining access, etc.)</param>
+            <param name="noPermsPath">Path to page where user is redirected if we get an authentication loop (indicating they are logged in but still unable to access a particular page)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionStore(Owin.IAppBuilder,System.String,BTS.Common.Web.ICasSessionStore,Microsoft.Owin.PathString,Microsoft.Owin.PathString,System.Action{BTS.Common.CAS.CasAuthenticationContext,System.Security.Claims.ClaimsIdentity})">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, a generic session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="sessionStore">Instance of the application-specific session storage to use.</param>
+            <param name="loginPath">Path to application-specific login code (setting roles, determining access, etc.)</param>
+            <param name="noPermsPath">Path to page where user is redirected if we get an authentication loop (indicating they are logged in but still unable to access a particular page)</param>
+            <param name="claimsCallback">Callback to fire to add custom claims to the identity before it is stored (useful for storing roles or bitfield security)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCasAuthWithSessionCookies(Owin.IAppBuilder,System.String,Microsoft.Owin.PathString,Microsoft.Owin.PathString,System.Action{BTS.Common.CAS.CasAuthenticationContext,System.Security.Claims.ClaimsIdentity})">
+            <summary>
+            <para>
+            Register this application to use CAS authentication with session cookies.
+            To keep cookie size minimal, the ASP.NET session storage is used to store actual session details
+            and handle things such as single sign-out.
+            </para>
+            <para>
+            This method does not configure any sort of security. Use app.UseRoleBasedSecurity() or app.UseBitfieldSecurity()
+            as appropriate. If you are not using shared security management, app.UseCustomSecurity() allows you to register
+            a callback in your Startup.cs file to set up security details on successful authentication.
+            </para>
+            <para>
+            You should attempt to call UseCasAuthWithSessionStore instead if possible; ASP.NET sessions should only be used
+            if such use is unavoidable (such as when porting an existing application that already uses session data heavily)
+            </para>
+            </summary>
+            <param name="app"></param>
+            <param name="appName">Application name, used in session cookie. Should not contain any spaces.</param>
+            <param name="loginPath">Path to application-specific login code (setting roles, determining access, etc.)</param>
+            <param name="noPermsPath">Path to page where user is redirected if we get an authentication loop (indicating they are logged in but still unable to access a particular page)</param>
+            <param name="claimsCallback">Callback to fire to add custom claims to the identity before it is stored (useful for storing roles or bitfield security)</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCookieAuthenticationWithSessionStateSupport(Owin.IAppBuilder,Microsoft.Owin.Security.Cookies.CookieAuthenticationOptions)">
+            <summary>
+            Workaround a bug with OWIN's cookie handling colliding with ASP.NET Session State
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.OwinExtensions.UseCookieAuthenticationWithSessionStateSupport(Owin.IAppBuilder,Microsoft.Owin.Security.Cookies.CookieAuthenticationOptions,Owin.PipelineStage)">
+            <summary>
+            Workaround a bug with OWIN's cookie handling colliding with ASP.NET Session State
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <param name="stage"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTS.Common.Web.SecurityFlags">
+            <summary>
+            The access level to check when looking at security permissions. When assigning access,
+            a bitfield of these flags should be assigned according to the user's permission level.
+            </summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityFlags.None">
+            <summary>No access.</summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityFlags.View">
+            <summary>Ability to view existing records.</summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityFlags.Edit">
+            <summary>Ability to modify existing records.</summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityFlags.Create">
+            <summary>Ability to create new records.</summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityFlags.Delete">
+            <summary>Ability to delete existing records.</summary>
+        </member>
+        <member name="T:BTS.Common.Web.SecurityManager">
+            <summary>
+            Common user security functions
+            </summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityManager.ClaimTypeView">
+            <summary>
+            View permission
+            </summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityManager.ClaimTypeEdit">
+            <summary>
+            Edit permission
+            </summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityManager.ClaimTypeCreate">
+            <summary>
+            Create permission
+            </summary>
+        </member>
+        <member name="F:BTS.Common.Web.SecurityManager.ClaimTypeDelete">
+            <summary>
+            Delete permission
+            </summary>
+        </member>
+        <member name="M:BTS.Common.Web.SecurityManager.UseBitfieldSecurity(Owin.IAppBuilder,System.Type)">
+            <summary>
+            Register the type checked for whether or not a user is allowed to
+            do something. This must be an enum with FlagsAttribute.
+            The user should then have claims with type SecurityManager.ClaimTypeX
+            and a value being the bitfiled of all permissions they have (mapped to
+            permissionsType) for each type X (Read, Edit, Create, Delete).
+            </summary>
+            <param name="app"></param>
+            <param name="permissionsType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.SecurityManager.UseRoleBasedSecurity(Owin.IAppBuilder)">
+            <summary>
+            Registers that users should be checked for role membership to determine whether or not they are
+            allowed actions.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.SecurityManager.UseCustomSecurity(Owin.IAppBuilder,System.Action{System.Security.Claims.ClaimsPrincipal,System.Web.HttpContext})">
+            <summary>
+            Registers that user security is handled by the application. The application specifies a callback
+            which is called during the auth process and is passed the ClaimsPrincipal for the user as well
+            as the current HttpContext (ASP.NET sessions are automatically initialized when using custom security).
+            </summary>
+            <param name="app"></param>
+            <param name="callback"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.SecurityManager.MaybeRunCustomCallback(System.Security.Claims.ClaimsPrincipal,System.Web.HttpContext)">
+            <summary>
+            If we are using custom security, fire our callback so the application can set up the user.
+            </summary>
+            <param name="user"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:BTS.Common.Web.SecurityManager.IsAllowed(System.Security.Principal.IPrincipal,BTS.Common.Web.SecurityFlags,System.Enum[])">
+            <summary>
+            Returns true if the user is granted access to any of the following permissions with any of the given flags.
+            </summary>
+            <param name="user"></param>
+            <param name="flags"></param>
+            <param name="permissions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTS.Common.Web.SecurityManager.IsAllowed(System.Security.Principal.IPrincipal,System.String[])">
+            <summary>
+            Returns true if the user belongs to at least one of the given roles.
+            </summary>
+            <param name="user"></param>
+            <param name="roles"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
